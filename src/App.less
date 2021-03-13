@@ -1,0 +1,221 @@
+@import (css)
+  url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;600;900&display=swap");
+
+.App {
+  text-align: center;
+  background-color: #f6f6f6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  color: #fff;
+  font-family: "Nunito", sans-serif;
+
+  .main {
+    width: 80%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+
+    .airdrop-img {
+      width: 40vw;
+    }
+
+    .airdrop {
+      color: #161616;
+      text-align: left;
+      display: flex;
+      height: 100%;
+      flex-direction: column;
+      justify-content: space-between;
+
+      .title {
+        font-size: 2rem;
+      }
+
+      .address-info {
+        display: flex;
+        flex-direction: column;
+
+        .token-balance {
+          margin-top: 10px;
+          display: flex;
+          align-items: center;
+        }
+
+        .address-text {
+          font-weight: 900;
+          display: flex;
+          align-items: center;
+
+          .connected {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 10px;
+          }
+        }
+
+        .claimed-balance {
+          margin-top: 30px;
+          margin-bottom: 10px;
+        }
+
+        .key {
+          font-size: 1.5rem;
+        }
+      }
+
+      .claim-button {
+        justify-self: flex-end;
+        margin-bottom: 15px;
+        border: none;
+        border-radius: 8px;
+        background: #ec615b;
+        padding: 20px;
+        height: 60px;
+        color: #fff;
+        font-size: 20px;
+        font-weight: 600;
+        font-family: "Nunito", sans-serif;
+        outline: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .claim-button:disabled {
+        // background: #858da1;
+      }
+    }
+  }
+}
+
+.claiming-animation {
+  width: 40vw;
+}
+
+@media screen and (max-width: 500px) {
+  .claiming-animation {
+    width: 45vh;
+  }
+
+  .App {
+    .main {
+      width: 95%;
+      flex-direction: column-reverse;
+      align-items: center;
+      justify-content: space-between;
+      height: 80%;
+
+      .airdrop-img {
+        width: 45vh;
+      }
+
+      .airdrop {
+        text-align: center;
+        height: 50%;
+
+        .address-info {
+          margin-top: 30px;
+          align-items: center;
+
+          .key {
+            font-size: 1.2rem;
+          }
+        }
+      }
+
+      .claim-button {
+        margin-top: 20px;
+        padding: 10px !important;
+      }
+    }
+  }
+}
+
+.lds-roller {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-roller div {
+  animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  transform-origin: 40px 40px;
+}
+.lds-roller div:after {
+  content: " ";
+  display: block;
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #fff;
+  margin: -4px 0 0 -4px;
+}
+.lds-roller div:nth-child(1) {
+  animation-delay: -0.036s;
+}
+.lds-roller div:nth-child(1):after {
+  top: 63px;
+  left: 63px;
+}
+.lds-roller div:nth-child(2) {
+  animation-delay: -0.072s;
+}
+.lds-roller div:nth-child(2):after {
+  top: 68px;
+  left: 56px;
+}
+.lds-roller div:nth-child(3) {
+  animation-delay: -0.108s;
+}
+.lds-roller div:nth-child(3):after {
+  top: 71px;
+  left: 48px;
+}
+.lds-roller div:nth-child(4) {
+  animation-delay: -0.144s;
+}
+.lds-roller div:nth-child(4):after {
+  top: 72px;
+  left: 40px;
+}
+.lds-roller div:nth-child(5) {
+  animation-delay: -0.18s;
+}
+.lds-roller div:nth-child(5):after {
+  top: 71px;
+  left: 32px;
+}
+.lds-roller div:nth-child(6) {
+  animation-delay: -0.216s;
+}
+.lds-roller div:nth-child(6):after {
+  top: 68px;
+  left: 24px;
+}
+.lds-roller div:nth-child(7) {
+  animation-delay: -0.252s;
+}
+.lds-roller div:nth-child(7):after {
+  top: 63px;
+  left: 17px;
+}
+.lds-roller div:nth-child(8) {
+  animation-delay: -0.288s;
+}
+.lds-roller div:nth-child(8):after {
+  top: 56px;
+  left: 12px;
+}
+@keyframes lds-roller {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
