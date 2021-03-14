@@ -160,10 +160,8 @@ function App() {
   };
 
   const claimButtonDisabled =
-    claiming ||
-    claimSuccess ||
-    Number(claimBalance) === 0 ||
-    dayjs().isBefore(dayjs.unix(expiredTime));
+    claiming || claimSuccess || Number(claimBalance) === 0;
+  // || dayjs().isBefore(dayjs.unix(expiredTime));
 
   const claim = async () => {
     setClaiming(true);
