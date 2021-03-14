@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import dayjs from "dayjs";
 import { useLottie } from "lottie-react";
+import BigNumber from "bignumber.js";
 import ClaimingAnimation from "./assets/ClaimingAnimation.json";
 import { aWSBAirDropABI } from "./ABI/airdrop.json";
 import { EIP20 } from "./ABI/eip-20.json";
@@ -82,9 +83,9 @@ function Claiming() {
 function App() {
   const [address, setAddress] = useState<string>("");
   const [expiredTime, setExpiredTime] = useState<number>(0);
-  const [claimBalance, setClaimBalance] = useState<number>(0);
+  const [claimBalance, setClaimBalance] = useState<string>("0");
   const [errorNetWork, setErrorNetWork] = useState<boolean>(false);
-  const [aWSBTokenBalance, setaWSBTokenBalance] = useState<number>();
+  const [aWSBTokenBalance, setaWSBTokenBalance] = useState<string>("0");
   const [isMetaMaskConnected, setIsMetaMaskConnected] = useState<boolean>();
   const [claiming, setClaiming] = useState<boolean>(false);
   const [claimSuccess, setClaimSuccess] = useState<boolean>(false);
@@ -138,12 +139,26 @@ function App() {
         walletAccounts[0]
       );
       let expiredTime: ethers.BigNumber = await aWSBAirDropContract.claimExpiredAt();
+      console.log(
+        "🚀 ~ file: App.tsx ~ line 142 ~ getAirdropInfos ~ expiredTime",
+        expiredTime.toNumber()
+      );
       let claimBalance: ethers.BigNumber = await aWSBAirDropContract.claimWhitelist(
         walletAccounts[0]
       );
       setExpiredTime(expiredTime.toNumber());
-      setaWSBTokenBalance(aWSBTokenBalance.div((1e18).toString()).toNumber());
-      setClaimBalance(claimBalance.div((1e18).toString()).toNumber());
+      setaWSBTokenBalance(
+        new BigNumber(aWSBTokenBalance.toString())
+          .div(1e18)
+          .toFixed(4)
+          .toString()
+      );
+      setClaimBalance(
+        new BigNumber(claimBalance.toString())
+          .div(1e18)
+          .toFixed(4)
+          .toString()
+      );
     }
   };
 
@@ -160,8 +175,10 @@ function App() {
   };
 
   const claimButtonDisabled =
-    claiming || claimSuccess || Number(claimBalance) === 0;
-  // || dayjs().isBefore(dayjs.unix(expiredTime));
+    claiming ||
+    claimSuccess ||
+    Number(claimBalance) === 0 ||
+    dayjs().isAfter(dayjs.unix(expiredTime));
 
   const claim = async () => {
     setClaiming(true);
@@ -200,7 +217,7 @@ function App() {
             <span style={{ fontWeight: 300, marginLeft: "10px" }}>
               AirDrop Event
             </span>
-            <div className="version">0.0.5</div>
+            <div className="version">0.0.6</div>
           </div>
           <div className="address-info">
             <div className="key address-text">
