@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.css": "/wsb-airdrop-web/static/css/main.b3aff895.chunk.css",
-    "main.js": "/wsb-airdrop-web/static/js/main.4be5da62.chunk.js",
-    "main.js.map": "/wsb-airdrop-web/static/js/main.4be5da62.chunk.js.map",
-    "runtime-main.js": "/wsb-airdrop-web/static/js/runtime-main.431f6562.js",
-    "runtime-main.js.map": "/wsb-airdrop-web/static/js/runtime-main.431f6562.js.map",
-    "static/js/2.9fd187ca.chunk.js": "/wsb-airdrop-web/static/js/2.9fd187ca.chunk.js",
-    "static/js/2.9fd187ca.chunk.js.map": "/wsb-airdrop-web/static/js/2.9fd187ca.chunk.js.map",
-    "static/js/3.ac232d5d.chunk.js": "/wsb-airdrop-web/static/js/3.ac232d5d.chunk.js",
-    "static/js/3.ac232d5d.chunk.js.map": "/wsb-airdrop-web/static/js/3.ac232d5d.chunk.js.map",
+    "main.css": "/wsb-airdrop-web/static/css/main.a3241d62.chunk.css",
+    "main.js": "/wsb-airdrop-web/static/js/main.2ebe15bc.chunk.js",
+    "main.js.map": "/wsb-airdrop-web/static/js/main.2ebe15bc.chunk.js.map",
+    "runtime-main.js": "/wsb-airdrop-web/static/js/runtime-main.d848c354.js",
+    "runtime-main.js.map": "/wsb-airdrop-web/static/js/runtime-main.d848c354.js.map",
+    "static/js/2.097524f4.chunk.js": "/wsb-airdrop-web/static/js/2.097524f4.chunk.js",
+    "static/js/2.097524f4.chunk.js.map": "/wsb-airdrop-web/static/js/2.097524f4.chunk.js.map",
+    "static/js/3.268b3808.chunk.js": "/wsb-airdrop-web/static/js/3.268b3808.chunk.js",
+    "static/js/3.268b3808.chunk.js.map": "/wsb-airdrop-web/static/js/3.268b3808.chunk.js.map",
     "index.html": "/wsb-airdrop-web/index.html",
-    "static/css/main.b3aff895.chunk.css.map": "/wsb-airdrop-web/static/css/main.b3aff895.chunk.css.map",
-    "static/js/2.9fd187ca.chunk.js.LICENSE.txt": "/wsb-airdrop-web/static/js/2.9fd187ca.chunk.js.LICENSE.txt",
+    "static/css/main.a3241d62.chunk.css.map": "/wsb-airdrop-web/static/css/main.a3241d62.chunk.css.map",
+    "static/js/2.097524f4.chunk.js.LICENSE.txt": "/wsb-airdrop-web/static/js/2.097524f4.chunk.js.LICENSE.txt",
     "static/media/airdrop-mini.0a53d039.png": "/wsb-airdrop-web/static/media/airdrop-mini.0a53d039.png",
     "static/media/success-mini.9ad65050.png": "/wsb-airdrop-web/static/media/success-mini.9ad65050.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.431f6562.js",
-    "static/js/2.9fd187ca.chunk.js",
-    "static/css/main.b3aff895.chunk.css",
-    "static/js/main.4be5da62.chunk.js"
+    "static/js/runtime-main.d848c354.js",
+    "static/js/2.097524f4.chunk.js",
+    "static/css/main.a3241d62.chunk.css",
+    "static/js/main.2ebe15bc.chunk.js"
   ]
 }
