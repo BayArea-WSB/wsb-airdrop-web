@@ -160,7 +160,10 @@ function App() {
   };
 
   const claimButtonDisabled =
-    claiming || claimSuccess || Number(claimBalance) === 0;
+    claiming ||
+    claimSuccess ||
+    Number(claimBalance) === 0 ||
+    dayjs().isBefore(dayjs.unix(expiredTime));
 
   const claim = async () => {
     setClaiming(true);
@@ -179,6 +182,10 @@ function App() {
 
   return (
     <div className="App">
+      <div className="address">
+        Token:{AWSB_TOKEN_ADDRESS}
+        AirDrop: {AWSB_AIRDROP_CONTRACT_ADDRESS}
+      </div>
       <div className="main">
         {claiming ? (
           <Claiming />
@@ -195,6 +202,7 @@ function App() {
             <span style={{ fontWeight: 300, marginLeft: "10px" }}>
               AirDrop Event
             </span>
+            <div className="version">0.0.4</div>
           </div>
           <div className="address-info">
             <div className="key address-text">
