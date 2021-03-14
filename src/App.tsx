@@ -5,7 +5,11 @@ import { useLottie } from "lottie-react";
 import ClaimingAnimation from "./assets/ClaimingAnimation.json";
 import { aWSBAirDropABI } from "./ABI/airdrop.json";
 import { EIP20 } from "./ABI/eip-20.json";
-import { AWSB_TOKEN_ADDRESS, AWSB_AIRDROP_CONTRACT_ADDRESS } from "./const";
+import {
+  BSC_TESTNET_ID,
+  AWSB_TOKEN_ADDRESS,
+  AWSB_AIRDROP_CONTRACT_ADDRESS,
+} from "./const";
 import airdrop from "./assets/airdrop-mini.png";
 import success from "./assets/success-mini.png";
 import "./App.less";
@@ -22,12 +26,13 @@ let aWSBAirDropContract: ethers.Contract;
 let aWSBTokenContract: ethers.Contract;
 const aWSBTokenAddress = AWSB_TOKEN_ADDRESS;
 const aWSBAirDropContractAddress = AWSB_AIRDROP_CONTRACT_ADDRESS;
-const ethersProvider = new ethers.providers.Web3Provider(
-  window.ethereum,
-  "any"
-);
-
-const signer = ethersProvider.getSigner();
+let ethersProvider: any;
+let signer: any;
+if (ethereum) {
+  ethersProvider = new ethers.providers.Web3Provider(ethereum, "any");
+  signer = ethersProvider.getSigner();
+}
+console.log("🚀 ~ file: App.tsx ~ line 33 ~ ethersProvider", ethersProvider);
 
 const init = async () => {
   aWSBAirDropContract = new ethers.Contract(
@@ -75,7 +80,7 @@ function Claiming() {
 }
 
 function App() {
-  const [address, setAddress] = useState<string>();
+  const [address, setAddress] = useState<string>("");
   const [expiredTime, setExpiredTime] = useState<number>(0);
   const [claimBalance, setClaimBalance] = useState<number>(0);
   const [errorNetWork, setErrorNetWork] = useState<boolean>(false);
@@ -83,22 +88,31 @@ function App() {
   const [isMetaMaskConnected, setIsMetaMaskConnected] = useState<boolean>();
   const [claiming, setClaiming] = useState<boolean>(false);
   const [claimSuccess, setClaimSuccess] = useState<boolean>(false);
-  const [claimError, setClaimError] = useState<boolean>(false);
+  const [connecting, setConnecting] = useState<boolean>(true);
+  const [noWallet, setNotWallet] = useState<boolean>(false);
 
   useEffect(() => {
+    if (!ethereum) {
+      setNotWallet(true);
+      setConnecting(false);
+      return;
+    }
     let chainId: number;
+    setConnecting(true);
     const getNetWork = async () => {
       chainId = (await ethersProvider.getNetwork()).chainId;
-      if (chainId !== 97) {
+      if (chainId !== BSC_TESTNET_ID) {
         setErrorNetWork(true);
         setAddress("");
       }
     };
     getNetWork();
-  }, []);
-
-  useEffect(() => {
-    setIsMetaMaskConnected(Boolean(ethereum.selectedAddress));
+    async function getAccount() {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      setIsMetaMaskConnected(Boolean(ethereum.selectedAddress));
+      setConnecting(false);
+    }
+    getAccount();
   }, []);
 
   const change = (accounts: any[]) => {
@@ -109,11 +123,13 @@ function App() {
       setAddress("");
     }
   };
-  ethereum.on("accountsChanged", change);
+  if (ethereum) {
+    ethereum.on("accountsChanged", change);
+  }
 
   const getAirdropInfos = async () => {
     await init();
-    if (isMetaMaskConnected) {
+    if (isMetaMaskConnected && !errorNetWork) {
       let walletAccounts = await ethereum.request({
         method: "eth_requestAccounts",
       });
@@ -158,7 +174,6 @@ function App() {
       setClaiming(false);
     } catch (error) {
       setClaiming(false);
-      setClaimError(true);
     }
   };
 
@@ -189,11 +204,17 @@ function App() {
                   background: address ? "#52c41a" : "#E1694E",
                 }}
               ></div>
+              {connecting && "Connecting..."}
+              {noWallet && "Wallet not found!"}
               {address
                 ? formatAddress(String(address))
-                : errorNetWork
+                : errorNetWork && !connecting
                 ? "BSC Only !   Please Switch NetWork."
-                : "Please Unlock Wallet."}
+                : connecting
+                ? ""
+                : !noWallet
+                ? "Please Unlock Wallet."
+                : ""}
             </div>
             {address && (
               <Fragment>
@@ -233,7 +254,7 @@ function App() {
             >
               {claiming ? <Loaing /> : claimSuccess ? "Success!" : "Claim"}
             </button>
-          ) : errorNetWork ? (
+          ) : errorNetWork || noWallet ? (
             <button
               className="claim-button"
               disabled
@@ -241,7 +262,9 @@ function App() {
                 background: "#858da1",
               }}
             >
-              Please Switch NetWork to BSC.
+              {noWallet
+                ? "Please Install MetaMask."
+                : "Please Switch NetWork to BSC."}
             </button>
           ) : (
             <button
@@ -250,8 +273,9 @@ function App() {
                 background: "#4B2CC8",
               }}
               onClick={connectWallet}
+              disabled={connecting}
             >
-              Unlock Wallet
+              {connecting ? "Connecting..." : "Unlock Wallet"}
             </button>
           )}
         </div>
