@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/wsb-airdrop-web/static/css/main.3fb0d106.chunk.css",
-    "main.js": "/wsb-airdrop-web/static/js/main.0bc8db2b.chunk.js",
-    "main.js.map": "/wsb-airdrop-web/static/js/main.0bc8db2b.chunk.js.map",
+    "main.js": "/wsb-airdrop-web/static/js/main.a9c59c84.chunk.js",
+    "main.js.map": "/wsb-airdrop-web/static/js/main.a9c59c84.chunk.js.map",
     "runtime-main.js": "/wsb-airdrop-web/static/js/runtime-main.273d06a5.js",
     "runtime-main.js.map": "/wsb-airdrop-web/static/js/runtime-main.273d06a5.js.map",
     "static/js/2.21e735fe.chunk.js": "/wsb-airdrop-web/static/js/2.21e735fe.chunk.js",
@@ -19,6 +19,6 @@
     "static/js/runtime-main.273d06a5.js",
     "static/js/2.21e735fe.chunk.js",
     "static/css/main.3fb0d106.chunk.css",
-    "static/js/main.0bc8db2b.chunk.js"
+    "static/js/main.a9c59c84.chunk.js"
   ]
 }
