@@ -217,7 +217,7 @@ function App() {
             <span style={{ fontWeight: 300, marginLeft: "10px" }}>
               AirDrop Event
             </span>
-            <div className="version">0.0.6</div>
+            <div className="version">1.0.0</div>
           </div>
           <div className="address-info">
             <div className="key address-text">
