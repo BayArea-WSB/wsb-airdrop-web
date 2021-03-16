@@ -5,3 +5,11 @@ export const HECO_TESTNET_ID = 256
 
 export const AWSB_TOKEN_ADDRESS = '0x8c48d050e618e715b35a0e1e03c3b590001121cf'
 export const AWSB_AIRDROP_CONTRACT_ADDRESS = '0xFA3d9775d1bea6FF31b67cAF532cf1F9Ef7298f3'
+
+
+export const aWSBTokenInfo = {
+    tokenAddress:'0x8c48d050e618e715b35a0e1e03c3b590001121cf',
+    tokenSymbol: 'aWSB',
+    tokenDecimals: 18,
+    tokenImage: 'https://static-file-1259603563.file.myqcloud.com/static/cmc/xFnIcDbI/static/img/coins/64x64/8765.png'
+}

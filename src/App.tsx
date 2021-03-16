@@ -7,12 +7,15 @@ import ClaimingAnimation from "./assets/ClaimingAnimation.json";
 import { aWSBAirDropABI } from "./ABI/airdrop.json";
 import { EIP20 } from "./ABI/eip-20.json";
 import {
-  BSC_TESTNET_ID,
+  BSC_MAINNET_ID,
   AWSB_TOKEN_ADDRESS,
   AWSB_AIRDROP_CONTRACT_ADDRESS,
+  aWSBTokenInfo,
 } from "./const";
 import airdrop from "./assets/airdrop-mini.png";
 import success from "./assets/success-mini.png";
+import binanceLogo from "./assets/binance-logo.png";
+import metamask from "./assets/metamask.png";
 import "./App.less";
 import { Fragment } from "react";
 
@@ -80,6 +83,32 @@ function Claiming() {
   return <div className="claiming-animation">{View}</div>;
 }
 
+async function addToMask() {
+  try {
+    // wasAdded is a boolean. Like any RPC method, an error may be thrown.
+    const wasAdded = await ethereum.request({
+      method: "wallet_watchAsset",
+      params: {
+        type: "ERC20", // Initially only supports ERC20, but eventually more!
+        options: {
+          address: aWSBTokenInfo.tokenAddress, // The address that the token is at.
+          symbol: aWSBTokenInfo.tokenSymbol, // A ticker symbol or shorthand, up to 5 chars.
+          decimals: aWSBTokenInfo.tokenDecimals, // The number of decimals in the token
+          image: aWSBTokenInfo.tokenImage, // A string url of the token logo
+        },
+      },
+    });
+
+    if (wasAdded) {
+      console.log("Thanks for your interest!");
+    } else {
+      console.log("Your loss!");
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 function App() {
   const [address, setAddress] = useState<string>("");
   const [expiredTime, setExpiredTime] = useState<number>(0);
@@ -102,7 +131,7 @@ function App() {
     setConnecting(true);
     const getNetWork = async () => {
       chainId = (await ethersProvider.getNetwork()).chainId;
-      if (chainId !== BSC_TESTNET_ID) {
+      if (chainId !== BSC_MAINNET_ID) {
         setErrorNetWork(true);
         setAddress("");
       }
@@ -246,6 +275,23 @@ function App() {
                   <span style={{ fontWeight: 600, marginLeft: 10 }}>
                     {aWSBTokenBalance} aWSB
                   </span>
+                </div>
+                <div className="token-info">
+                  <div className="bsc-info">
+                    <img className="binance-logo" src={binanceLogo} alt="" />
+                    <div className="bsc-address">
+                      BSC:{" "}
+                      <span style={{ fontWeight: 600, marginLeft: 10 }}>
+                        {formatAddress(aWSBTokenInfo.tokenAddress)}
+                      </span>
+                    </div>
+                    <img
+                      className="metamask-logo"
+                      src={metamask}
+                      alt=""
+                      onClick={addToMask}
+                    />
+                  </div>
                 </div>
                 <div className="key claimed-balance">
                   To be claimed:{" "}

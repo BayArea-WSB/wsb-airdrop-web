@@ -62,6 +62,36 @@
           align-items: center;
         }
 
+        .token-info {
+          margin-top: 10px;
+          display: flex;
+          // justify-content: space-around;
+          align-items: center;
+          justify-content: flex-start;
+          width: 80%;
+          max-width: 350px;
+          border-radius: 16px;
+          padding: 10px;
+          font-weight: 600;
+          background: #eff2f5;
+
+          .bsc-info {
+            display: flex;
+            .binance-logo {
+              width: 20px;
+              height: 20px;
+            }
+            .bsc-address {
+              font-size: 1rem;
+              margin-left: 5px;
+            }
+            .metamask-logo {
+              width: 25px;
+              margin-left: 20px;
+            }
+          }
+        }
+
         .address-text {
           font-weight: 900;
           display: flex;
@@ -141,6 +171,10 @@
 
           .key {
             font-size: 1.2rem;
+          }
+
+          .token-info {
+            display: none;
           }
         }
       }
