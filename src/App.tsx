@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import { ethers } from "ethers";
 import dayjs from "dayjs";
 import { useLottie } from "lottie-react";
@@ -6,10 +6,15 @@ import BigNumber from "bignumber.js";
 import ClaimingAnimation from "./assets/ClaimingAnimation.json";
 import { aWSBAirDropABI } from "./ABI/airdrop.json";
 import { EIP20 } from "./ABI/eip-20.json";
+import { Fairy } from "./ABI/fairy-airdrop.json";
 import {
   BSC_MAINNET_ID,
+  BSC_TESTNET_ID,
   AWSB_TOKEN_ADDRESS,
+  AWSB_TOKEN_ADDRESS_TEST,
+  FAIRY_CONTRACT_ADDRESS_TEST,
   AWSB_AIRDROP_CONTRACT_ADDRESS,
+  AWSB_AIRDROP_CONTRACT_ADDRESS_TEST,
   aWSBTokenInfo,
 } from "./const";
 import airdrop from "./assets/airdrop-mini.png";
@@ -17,7 +22,6 @@ import success from "./assets/success-mini.png";
 import binanceLogo from "./assets/binance-logo.png";
 import metamask from "./assets/metamask.png";
 import "./App.less";
-import { Fragment } from "react";
 
 declare global {
   interface Window {
@@ -28,8 +32,17 @@ declare global {
 const ethereum = window.ethereum;
 let aWSBAirDropContract: ethers.Contract;
 let aWSBTokenContract: ethers.Contract;
-const aWSBTokenAddress = AWSB_TOKEN_ADDRESS;
-const aWSBAirDropContractAddress = AWSB_AIRDROP_CONTRACT_ADDRESS;
+
+let FairyAirDropContract: ethers.Contract;
+
+// const aWSBTokenAddress = AWSB_TOKEN_ADDRESS;
+// const aWSBAirDropContractAddress = AWSB_AIRDROP_CONTRACT_ADDRESS;
+
+//DEV:
+const aWSBTokenAddress = AWSB_TOKEN_ADDRESS_TEST;
+const aWSBAirDropContractAddress = AWSB_AIRDROP_CONTRACT_ADDRESS_TEST;
+const FairyAirDropContractAddress = FAIRY_CONTRACT_ADDRESS_TEST;
+
 let ethersProvider: any;
 let signer: any;
 if (ethereum) {
@@ -44,10 +57,16 @@ const init = async () => {
     aWSBAirDropABI,
     ethersProvider
   );
+  FairyAirDropContract = new ethers.Contract(
+    FairyAirDropContractAddress,
+    Fairy,
+    ethersProvider
+  );
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   aWSBTokenContract = new ethers.Contract(aWSBTokenAddress, EIP20);
   aWSBTokenContract = aWSBTokenContract.connect(signer);
   aWSBAirDropContract = aWSBAirDropContract.connect(signer);
+  FairyAirDropContract = FairyAirDropContract.connect(signer);
 };
 
 const formatAddress = (address: string) => {
@@ -120,6 +139,10 @@ function App() {
   const [claimSuccess, setClaimSuccess] = useState<boolean>(false);
   const [connecting, setConnecting] = useState<boolean>(true);
   const [noWallet, setNotWallet] = useState<boolean>(false);
+  const [isFairy, setIsFairy] = useState<boolean>(false);
+  const [isFairyEvent, setIsFairyEvent] = useState<boolean>(false);
+  const [fairyNextReleasedTime, setFairyNextReleasedTime] = useState<number>(0);
+  const [fairyClaimBalance, setFairyClaimBalance] = useState<string>("0");
 
   useEffect(() => {
     if (!ethereum) {
@@ -131,7 +154,7 @@ function App() {
     setConnecting(true);
     const getNetWork = async () => {
       chainId = (await ethersProvider.getNetwork()).chainId;
-      if (chainId !== BSC_MAINNET_ID) {
+      if (chainId !== BSC_TESTNET_ID) {
         setErrorNetWork(true);
         setAddress("");
       }
@@ -168,12 +191,29 @@ function App() {
         walletAccounts[0]
       );
       let expiredTime: ethers.BigNumber = await aWSBAirDropContract.claimExpiredAt();
-      console.log(
-        "🚀 ~ file: App.tsx ~ line 142 ~ getAirdropInfos ~ expiredTime",
-        expiredTime.toNumber()
-      );
       let claimBalance: ethers.BigNumber = await aWSBAirDropContract.claimWhitelist(
         walletAccounts[0]
+      );
+      let fairyStatus: boolean = await FairyAirDropContract.containsFairy(
+        walletAccounts[0]
+      );
+      if (fairyStatus) {
+        let nextReleasedTime: number = await FairyAirDropContract.nextReleasedTime();
+        let fairyBalance: number = await FairyAirDropContract.fairyVault(
+          walletAccounts[0]
+        );
+        setFairyNextReleasedTime(nextReleasedTime);
+        setFairyClaimBalance(
+          new BigNumber(fairyBalance.toString())
+            .div(1e18)
+            .toFixed(4)
+            .toString()
+        );
+      }
+      setIsFairy(fairyStatus);
+      console.log(
+        "🚀 ~ file: App.tsx ~ line 196 ~ getAirdropInfos ~ fairyStatus",
+        fairyStatus
       );
       setExpiredTime(expiredTime.toNumber());
       setaWSBTokenBalance(
@@ -203,16 +243,22 @@ function App() {
     });
   };
 
-  const claimButtonDisabled =
-    claiming ||
-    claimSuccess ||
-    Number(claimBalance) === 0 ||
-    dayjs().isAfter(dayjs.unix(expiredTime));
+  const claimButtonDisabled = isFairyEvent
+    ? claiming || claimSuccess || Number(fairyClaimBalance) === 0
+    : claiming ||
+      claimSuccess ||
+      Number(claimBalance) === 0 ||
+      dayjs().isAfter(dayjs.unix(expiredTime));
 
   const claim = async () => {
     setClaiming(true);
     try {
-      let process = await aWSBAirDropContract.claim();
+      let process;
+      if (isFairyEvent) {
+        process = await FairyAirDropContract.claim();
+      } else {
+        process = await aWSBAirDropContract.claim();
+      }
       try {
         await process.wait();
         setClaimSuccess(true);
@@ -248,6 +294,26 @@ function App() {
             </span>
             <div className="version">1.0.1</div>
           </div>
+          {isFairy && (
+            <div className="fairy">
+              {isFairyEvent ? (
+                <div style={{ marginRight: "20px" }}>
+                  <span style={{ fontSize: 30 }}>🧚‍♀️</span> Welcome Fairy{" "}
+                  <span style={{ fontSize: 30 }}>🧚‍♀️</span>
+                </div>
+              ) : (
+                <div
+                  className="enter-button"
+                  onClick={() => {
+                    setIsFairyEvent(true);
+                  }}
+                >
+                  <span style={{ fontSize: 30, marginRight: 5 }}>🧚‍♀️</span>Enter
+                  Fairy Airdrop
+                </div>
+              )}
+            </div>
+          )}
           <div className="address-info">
             <div className="key address-text">
               <div
@@ -296,11 +362,11 @@ function App() {
                 <div className="key claimed-balance">
                   To be claimed:{" "}
                   <span style={{ fontWeight: 600, marginLeft: 10 }}>
-                    {claimBalance} aWSB
+                    {isFairyEvent ? fairyClaimBalance : claimBalance} aWSB
                   </span>
                 </div>
                 <div className="key">
-                  Claims Expired Time:
+                  {isFairyEvent ? "Next Released Time" : "Claims Expired Time:"}
                   <span style={{ fontWeight: 600, marginLeft: 10 }}>
                     {dayjs(expiredTime * 1000).format("YYYY-MM-DD")}
                   </span>
@@ -321,7 +387,15 @@ function App() {
                   : "#ec615b",
               }}
             >
-              {claiming ? <Loaing /> : claimSuccess ? "Success!" : "Claim"}
+              {claiming ? (
+                <Loaing />
+              ) : claimSuccess ? (
+                "Success!"
+              ) : isFairyEvent ? (
+                "Fairy Claim"
+              ) : (
+                "Claim"
+              )}
             </button>
           ) : errorNetWork || noWallet ? (
             <button
