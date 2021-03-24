@@ -198,11 +198,15 @@ function App() {
         walletAccounts[0]
       );
       if (fairyStatus) {
-        let nextReleasedTime: number = await FairyAirDropContract.nextReleasedTime();
-        let fairyBalance: number = await FairyAirDropContract.fairyVault(
+        let nextReleasedTime: ethers.BigNumber = await FairyAirDropContract.nextReleasedTime();
+        console.log(
+          "🚀 ~ file: App.tsx ~ line 202 ~ getAirdropInfos ~ nextReleasedTime",
+          nextReleasedTime.toNumber()
+        );
+        let fairyBalance: ethers.BigNumber = await FairyAirDropContract.fairyVault(
           walletAccounts[0]
         );
-        setFairyNextReleasedTime(nextReleasedTime);
+        setFairyNextReleasedTime(nextReleasedTime.toNumber());
         setFairyClaimBalance(
           new BigNumber(fairyBalance.toString())
             .div(1e18)
@@ -368,7 +372,11 @@ function App() {
                 <div className="key">
                   {isFairyEvent ? "Next Released Time" : "Claims Expired Time:"}
                   <span style={{ fontWeight: 600, marginLeft: 10 }}>
-                    {dayjs(expiredTime * 1000).format("YYYY-MM-DD")}
+                    {dayjs(
+                      isFairyEvent
+                        ? fairyNextReleasedTime * 1000
+                        : expiredTime * 1000
+                    ).format("YYYY-MM-DD")}
                   </span>
                 </div>
               </Fragment>
