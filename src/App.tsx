@@ -298,7 +298,7 @@ function App() {
             <span style={{ fontWeight: 300, marginLeft: "10px" }}>
               AirDrop Event
             </span>
-            <div className="version">1.0.1</div>
+            <div className="version">1.1.0</div>
           </div>
           {isFairy && (
             <div className="fairy">
