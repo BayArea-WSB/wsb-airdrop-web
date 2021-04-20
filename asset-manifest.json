@@ -1,24 +1,24 @@
 {
   "files": {
     "main.css": "/wsb-airdrop-web/static/css/main.eb9d1ec5.chunk.css",
-    "main.js": "/wsb-airdrop-web/static/js/main.c1bb0cd5.chunk.js",
-    "main.js.map": "/wsb-airdrop-web/static/js/main.c1bb0cd5.chunk.js.map",
+    "main.js": "/wsb-airdrop-web/static/js/main.a3c3d0ef.chunk.js",
+    "main.js.map": "/wsb-airdrop-web/static/js/main.a3c3d0ef.chunk.js.map",
     "runtime-main.js": "/wsb-airdrop-web/static/js/runtime-main.31a7f2f7.js",
     "runtime-main.js.map": "/wsb-airdrop-web/static/js/runtime-main.31a7f2f7.js.map",
-    "static/js/2.45d14a74.chunk.js": "/wsb-airdrop-web/static/js/2.45d14a74.chunk.js",
-    "static/js/2.45d14a74.chunk.js.map": "/wsb-airdrop-web/static/js/2.45d14a74.chunk.js.map",
+    "static/js/2.2abce885.chunk.js": "/wsb-airdrop-web/static/js/2.2abce885.chunk.js",
+    "static/js/2.2abce885.chunk.js.map": "/wsb-airdrop-web/static/js/2.2abce885.chunk.js.map",
     "static/js/3.25efd235.chunk.js": "/wsb-airdrop-web/static/js/3.25efd235.chunk.js",
     "static/js/3.25efd235.chunk.js.map": "/wsb-airdrop-web/static/js/3.25efd235.chunk.js.map",
     "index.html": "/wsb-airdrop-web/index.html",
     "static/css/main.eb9d1ec5.chunk.css.map": "/wsb-airdrop-web/static/css/main.eb9d1ec5.chunk.css.map",
-    "static/js/2.45d14a74.chunk.js.LICENSE.txt": "/wsb-airdrop-web/static/js/2.45d14a74.chunk.js.LICENSE.txt",
+    "static/js/2.2abce885.chunk.js.LICENSE.txt": "/wsb-airdrop-web/static/js/2.2abce885.chunk.js.LICENSE.txt",
     "static/media/airdrop-mini.0a53d039.png": "/wsb-airdrop-web/static/media/airdrop-mini.0a53d039.png",
     "static/media/success-mini.9ad65050.png": "/wsb-airdrop-web/static/media/success-mini.9ad65050.png"
   },
   "entrypoints": [
     "static/js/runtime-main.31a7f2f7.js",
-    "static/js/2.45d14a74.chunk.js",
+    "static/js/2.2abce885.chunk.js",
     "static/css/main.eb9d1ec5.chunk.css",
-    "static/js/main.c1bb0cd5.chunk.js"
+    "static/js/main.a3c3d0ef.chunk.js"
   ]
 }
